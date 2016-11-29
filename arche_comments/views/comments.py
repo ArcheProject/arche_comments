@@ -66,23 +66,28 @@ def _redirect_or_remove(formview):
 def comments_json(context, request):
     results = []
 
-    def get_author(obj):
+    def get_user(obj):
         try:
-            userid = obj.creator[0]
-        except IndexError:
-            return ""
-        try:
-            user = request.root['users'][userid]
-        except KeyError:
-            return userid
-        return "%s (%s)" % (user.title, userid)
+            return request.root['users'][obj.creator[0]]
+        except (KeyError, IndexError):
+            pass
+
+        # return "%s (%s)" % (user.title, userid)
 
     for obj in context.values():
         if IComment.providedBy(obj):
+            user = get_user(obj)
+            if user:
+                author_title = "%s (%s)" % (user.title, user.userid)
+                img_tag = request.thumb_tag(user, 'square', direction = 'down')
+            else:
+                author_title = ''
+                img_tag = ''
             item = {
                 'body': obj.body,
                 'created': request.dt_handler.format_dt(obj.created),
-                'author': get_author(obj)
+                'author': author_title,
+                'img_tag': img_tag,
             }
             results.append(item)
     return results
