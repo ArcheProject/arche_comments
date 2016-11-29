@@ -1,7 +1,13 @@
 
+from pyramid.i18n import TranslationStringFactory
+
+_ = TranslationStringFactory('arche_comments')
+
+
 def includeme(config):
     config.include('.fanstatic_lib')
     config.include('.models')
+    config.include('.portlet')
     config.include('.schemas')
     config.include('.views')
     #Static dir

@@ -1,0 +1,38 @@
+<tal:main xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="arche_comments">
+<div class="portlet">
+
+<tal:no_comments condition="not comments">
+  No comments yet
+  <a href="${request.resource_url(context, '_add_comments')}"
+     class="btn btn-success">
+    Enable
+  </a>
+</tal:no_comments>
+
+<tal:has_comments condition="comments">
+  <h4>${comments.title}</h4>
+
+  <div data-comments>
+    <div class="comment">
+      <div class="body">Body</div>
+      <div class="created">Created</div>
+      <div class="author">Author</div>
+    </div>
+  </div>
+
+  <div data-comment-form></div>
+  <a data-add-comment
+     href="${request.resource_url(comments, 'add')}"
+     class="btn btn-success">
+    <span data-actionmarker="glyphicon glyphicon-refresh rotate-me"></span>
+    <span i18n:translate="">Add</span>
+  </a>
+
+</tal:has_comments>
+
+</div>
+</tal:main>
