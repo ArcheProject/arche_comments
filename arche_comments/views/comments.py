@@ -72,8 +72,6 @@ def comments_json(context, request):
         except (KeyError, IndexError):
             pass
 
-        # return "%s (%s)" % (user.title, userid)
-
     for obj in context.values():
         if IComment.providedBy(obj):
             user = get_user(obj)
