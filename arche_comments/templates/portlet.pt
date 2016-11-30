@@ -18,18 +18,26 @@
 
   <div data-comments>
     <div class="comment">
-      <div class="body">Body</div>
-      <div class="created">Created</div>
-      <div class="author">Author</div>
+      
+      <div class="author-img"></div>
+      
+      <div class="comment-container">
+        <div class="comment-head">
+          <span class="author">Author</span>
+          <span class="created small">Created</span>
+        </div>
+        <div class="body">Body</div>
+      </div>
+      
     </div>
   </div>
 
   <div data-comment-form></div>
   <a data-add-comment
      href="${request.resource_url(comments, 'add')}"
-     class="btn btn-success">
+     class="add-comment-button">
     <span data-actionmarker="glyphicon glyphicon-refresh rotate-me"></span>
-    <span i18n:translate="">Add</span>
+    <span i18n:translate=""><span class="glyphicon glyphicon-plus"></span>&nbsp;Add comment</span>
   </a>
 
 </tal:has_comments>

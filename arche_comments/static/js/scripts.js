@@ -50,6 +50,7 @@ function Comments() {
                 '.body': 'obj.body',
                 '.created': 'obj.created',
                 '.author': 'obj.author',
+                '.author-img': 'obj.img_tag',
             }
         }
     };
