@@ -1,0 +1,35 @@
+
+.comment {
+    position: relative;
+    margin-bottom: 10px;
+}
+.author-img {
+    height:36px;
+    width:36px;
+    border-radius:4px;
+    overflow:hidden;
+    position:absolute;
+    top:0;
+    left:0
+}
+.comment-container {
+    margin-left:45px;
+}
+.comment-head {}
+.author {
+    font-weight: bold;
+    margin-right:4px;
+}
+.created {
+    color: #999;
+}
+.add-comment-button {
+    padding: 6px 8px;
+    display: block;
+    border-radius: 3px;
+
+    &:hover {
+        background-color: #eee;
+        text-decoration: none;
+    }
+}
