@@ -5,40 +5,65 @@
       i18n:domain="arche_comments">
 <div class="portlet">
 
-<tal:no_comments condition="not comments">
-  No comments yet
-  <a href="${request.resource_url(context, '_add_comments')}"
-     class="btn btn-success">
-    Enable
-  </a>
-</tal:no_comments>
+<a tal:condition="not comments and can_toggle"
+   href="${request.resource_url(context, '_add_comments')}"
+   class="btn btn-success" i18n:translate="">
+  Create comments section
+</a>
 
 <tal:has_comments condition="comments">
-  <h4>${comments.title}</h4>
+  <h2 tal:condition="comments.enabled or can_toggle">${comments.title}</h2>
 
-  <div data-comments>
+  <p tal:condition="can_toggle">
+    <a tal:condition="comments.enabled == True"
+       href="${request.resource_url(comments, '_toggle_comments')}"
+       class="btn btn-warning btn-sm" i18n:translate="">
+      Disable comments
+    </a>
+    <a tal:condition="comments.enabled == False"
+       href="${request.resource_url(comments, '_toggle_comments', query={'enable': 1})}"
+       class="btn btn-success btn-sm" i18n:translate="">
+      Enable comments
+    </a>
+  </p>
+
+  <tal:no_comments condition="len(comments) == 0 and comments.enabled">
+    <i i18n:translate="">No comments yet</i>
+  </tal:no_comments>
+
+  <div data-comments class="hidden">
     <div class="comment">
-      
-      <div class="author-img"></div>
-      
+    <hr/>
       <div class="comment-container">
         <div class="comment-head">
-          <span class="author">Author</span>
-          <span class="created small">Created</span>
+          <span class="author-img"></span>
+          <b class="author">Author</b>
+          <span class="created text-muted small">Created</span>
         </div>
-        <div class="body">Body</div>
+        <div class="comment-body">Body</div>
       </div>
-      
     </div>
   </div>
 
   <div data-comment-form></div>
-  <a data-add-comment
-     href="${request.resource_url(comments, 'add')}"
-     class="add-comment-button">
-    <span data-actionmarker="glyphicon glyphicon-refresh rotate-me"></span>
-    <span i18n:translate=""><span class="glyphicon glyphicon-plus"></span>&nbsp;Add comment</span>
-  </a>
+  <tal:add_comment tal:condition="can_add">
+    <hr/>
+    <a data-add-comment
+       href="${request.resource_url(comments, 'add')}"
+       class="btn btn-success btn-sm">
+      <span data-actionmarker="glyphicon glyphicon-refresh rotate-me"></span>
+      <span class="glyphicon glyphicon-comment"></span>
+      <span i18n:translate="">Comment</span>
+    </a>
+  </tal:add_comment>
+
+  <script tal:define="url request.resource_url(comments, 'comments.json')">
+    $(function () {
+        comments = new Comments("${url}");
+        $('[data-add-comment]').on('click', comments.load_comment_form);
+        comments.load_comments();
+    });
+  </script>
 
 </tal:has_comments>
 

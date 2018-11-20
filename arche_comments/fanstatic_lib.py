@@ -10,8 +10,8 @@ from js.bootstrap import bootstrap_css
 
 library = Library('arche_comments', 'static')
 
-arche_comments_css = Resource(library, 'css/main.css', depends = (bootstrap_css,))
-arche_comments_scripts = Resource(library, 'js/scripts.js', depends=(bootstrap_js, common_js, pure_js))
+arche_comments_css = Resource(library, 'styles.css', depends = (bootstrap_css,))
+arche_comments_scripts = Resource(library, 'scripts.js', depends=(bootstrap_js, common_js, pure_js))
 
 
 def need_subscriber(view, event):

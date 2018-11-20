@@ -1,6 +1,6 @@
-from arche.interfaces import IBase, IIndexedContent
-
+from arche.interfaces import IBase
 from arche.interfaces import IFolder
+from arche.interfaces import IIndexedContent
 
 
 class IComment(IBase, IIndexedContent):
@@ -9,6 +9,3 @@ class IComment(IBase, IIndexedContent):
 
 class ICommentsFolder(IBase, IFolder):
     pass
-
-
-

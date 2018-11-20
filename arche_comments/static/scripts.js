@@ -1,12 +1,12 @@
 
 
-function Comments() {
-
+function Comments(url) {
+    this.url = url;
     this.pure_tpl = $('[data-comments]').clone().html();
 
     this.load_comments = function() {
         if ($('[data-comments]').length > 0) {
-            var request = arche.do_request('./_comments/comments.json');
+            var request = arche.do_request(this.url);
             request.done(this.render_comments);
         }
     }
@@ -15,7 +15,7 @@ function Comments() {
     this.render_comments = function(response) {
         $("[data-comments]").html(that.pure_tpl);
         $("[data-comments]").render(response, that.directive);
-        $("[data-comments]").show();
+        $("[data-comments]").removeClass('hidden');
     }
 
     this.load_comment_form = function(event) {
@@ -47,20 +47,11 @@ function Comments() {
     this.directive = {'.comment':
         {'obj<-':
             {
-                '.body': 'obj.body',
+                '.comment-body': 'obj.body',
                 '.created': 'obj.created',
                 '.author': 'obj.author',
                 '.author-img': 'obj.img_tag',
             }
         }
     };
-
-
 }
-
-
-$(function () {
-    comments = new Comments()
-    $('[data-add-comment]').on('click', comments.load_comment_form);
-    comments.load_comments();
-});

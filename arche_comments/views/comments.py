@@ -1,32 +1,45 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 from arche.interfaces import IContent
+from arche.security import PERM_VIEW
 from arche.utils import generate_slug
 from arche.views.base import DefaultAddForm
-from arche_comments.interfaces import ICommentsFolder, IComment
-from pyramid.httpexceptions import HTTPForbidden, HTTPFound
+from pyramid.httpexceptions import HTTPForbidden
+from pyramid.httpexceptions import HTTPFound
 from pyramid.response import Response
 from pyramid.view import view_config
 
 from arche_comments import _
+from arche_comments.interfaces import IComment
+from arche_comments.interfaces import ICommentsFolder
+from arche_comments.security import ADD_COMMENT
+from arche_comments.security import ENABLE_COMMENTS
 
 
-#FIXME: Permission
-@view_config(context = IContent, name='_add_comments', renderer='arche:templates/form.pt')
+@view_config(context = IContent, name='_add_comments',
+             permission=ENABLE_COMMENTS,
+             renderer='arche:templates/form.pt')
 class AddCommentsFolderForm(DefaultAddForm):
-    title = _("Enable comments")
+    title = _("Create comments section?")
+    description = _("You can disable this later on if you wish.")
     type_name = 'CommentsFolder'
 
     def save_success(self, appstruct):
         self.flash_messages.add(self.default_success, type="success")
+        notify_user = appstruct.pop('notify', False)
         factory = self.request.content_factories[self.type_name]
         obj = factory(**appstruct)
         name = '_comments'
         if name in self.context:
-            raise HTTPForbidden(_("Comments already exit here"))
+            raise HTTPForbidden(_("Comments already exist here"))
+        if notify_user:
+            obj.notify_userids.add(self.request.authenticated_userid)
         self.context[name] = obj
         return HTTPFound(location = self.request.resource_url(self.context))
 
 
-@view_config(context = ICommentsFolder, name='add', renderer='arche:templates/form.pt')
+@view_config(context = ICommentsFolder, name='add', renderer='arche:templates/form.pt', permission=ADD_COMMENT)
 class AddCommentForm(DefaultAddForm):
     title = _("Add")
     type_name = 'Comment'
@@ -61,8 +74,11 @@ def _redirect_or_remove(formview):
         </script>""".format(formview.formid))
     return HTTPFound(location=formview.request.resource_url(formview.context))
 
-#FIXME: Permission
-@view_config(context=ICommentsFolder, name='comments.json', renderer='json')
+
+@view_config(context=ICommentsFolder,
+             name='comments.json',
+             renderer='json',
+             permission=PERM_VIEW)
 def comments_json(context, request):
     results = []
 
@@ -77,7 +93,10 @@ def comments_json(context, request):
             user = get_user(obj)
             if user:
                 author_title = "%s (%s)" % (user.title, user.userid)
-                img_tag = request.thumb_tag(user, 'square', direction = 'down')
+                try:
+                    img_tag = request.thumb_tag(user, 'square', direction = 'down')
+                except AttributeError:
+                    img_tag = ''
             else:
                 author_title = ''
                 img_tag = ''
@@ -89,6 +108,13 @@ def comments_json(context, request):
             }
             results.append(item)
     return results
+
+
+@view_config(context=ICommentsFolder, name='_toggle_comments', permission=ENABLE_COMMENTS)
+def toggle_comments(context, request):
+    enable = request.GET.get('enable') == '1'
+    context.enabled = enable
+    return HTTPFound(location=request.resource_url(context.__parent__))
 
 
 def includeme(config):
