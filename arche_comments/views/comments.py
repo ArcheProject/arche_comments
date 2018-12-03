@@ -9,6 +9,7 @@ from pyramid.httpexceptions import HTTPForbidden
 from pyramid.httpexceptions import HTTPFound
 from pyramid.response import Response
 from pyramid.view import view_config
+from repoze.catalog.query import Eq
 
 from arche_comments import _
 from arche_comments.interfaces import IComment
@@ -88,7 +89,9 @@ def comments_json(context, request):
         except (KeyError, IndexError):
             pass
 
-    for obj in context.values():
+    query = Eq('type_name', 'Comment') & Eq('path', request.resource_path(context))
+    docids = request.root.catalog.query(query, sort_index='created')[1]
+    for obj in request.resolve_docids(docids, perm=None):  # Perm already checked
         if IComment.providedBy(obj):
             user = get_user(obj)
             if user:
