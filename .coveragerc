@@ -1,3 +1,6 @@
 [run]
-source = arche_comments
-omit = arche_comments/test*
+
+[report]
+show_missing = true
+omit =
+  *test*py
