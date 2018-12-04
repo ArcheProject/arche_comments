@@ -13,7 +13,6 @@ from pyramid.httpexceptions import HTTPUnauthorized
 from pyramid.response import Response
 from pyramid.view import view_config
 from pyramid.view import view_defaults
-from pyramid_debugtoolbar.panels.introspection import nl2br
 from repoze.catalog.query import Eq
 
 from arche_comments import _
@@ -109,7 +108,7 @@ def comments_json(context, request):
                 author_title = ''
                 img_tag = ''
             item = {
-                'body': nl2br(obj.body),
+                'body': obj.body,
                 'created': request.dt_handler.format_dt(obj.created),
                 'author': author_title,
                 'img_tag': img_tag,

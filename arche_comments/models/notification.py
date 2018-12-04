@@ -9,7 +9,6 @@ from pyramid.traversal import find_interface
 from arche_comments import _
 from arche_comments.interfaces import IComment
 from arche_comments.interfaces import ICommentsFolder
-from webhelpers.html.converters import nl2br
 
 
 def notify_subscribing_users(context, event):
@@ -33,7 +32,7 @@ def notify_subscribing_users(context, event):
             comment_user = None
         values = dict(
             user=user,
-            body=nl2br(context.body),
+            body=context.body,
             comment_context=comments_context,
             comment_user=comment_user,
             unsubscribe_url=comments.unsubscribe_url(request, userid),
