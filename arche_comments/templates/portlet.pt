@@ -15,15 +15,29 @@
   <h2 tal:condition="comments.enabled or can_toggle">${comments.title}</h2>
 
   <p tal:condition="can_toggle">
-    <a tal:condition="comments.enabled == True"
+    <a tal:condition="comments.enabled"
        href="${request.resource_url(comments, '_toggle_comments')}"
-       class="btn btn-warning btn-sm" i18n:translate="">
+       class="btn btn-warning" i18n:translate="">
       Disable comments
     </a>
-    <a tal:condition="comments.enabled == False"
+    <a tal:condition="not comments.enabled"
        href="${request.resource_url(comments, '_toggle_comments', query={'enable': 1})}"
-       class="btn btn-success btn-sm" i18n:translate="">
+       class="btn btn-success" i18n:translate="">
       Enable comments
+    </a>
+    <a tal:condition="comments.is_subscibing(request.authenticated_userid)"
+       class="btn btn-warning"
+       href="${comments.unsubscribe_url(request)}">
+      <span class="glyphicon glyphicon-envelope"></span>
+      <tal:ts i18n:translate="">Disable email notifications</tal:ts>
+    </a>
+    <a tal:condition="not comments.is_subscibing(request.authenticated_userid) and comments.enabled"
+       title="Will send you an email when someone adds a comment here."
+       i18n:attributes="title;"
+       class="btn btn-success"
+       href="${comments.subscribe_url(request)}">
+      <span class="glyphicon glyphicon-envelope"></span>
+      <tal:ts i18n:translate="">Enable email notifications</tal:ts>
     </a>
   </p>
 
@@ -50,10 +64,10 @@
     <hr/>
     <a data-add-comment
        href="${request.resource_url(comments, 'add')}"
-       class="btn btn-success btn-sm">
+       class="btn btn-success">
       <span data-actionmarker="glyphicon glyphicon-refresh rotate-me"></span>
       <span class="glyphicon glyphicon-comment"></span>
-      <span i18n:translate="">Comment</span>
+      <span i18n:translate="">New Comment</span>
     </a>
   </tal:add_comment>
 

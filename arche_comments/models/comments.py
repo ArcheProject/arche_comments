@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from BTrees.OOBTree import OOSet
+from uuid import uuid4
+
+from BTrees.OOBTree import OOBTree
 from arche.api import Base
 from arche.api import ContextACLMixin
 from arche.api import Folder
@@ -32,11 +34,44 @@ class CommentsFolder(Base, Folder, ContextACLMixin, LocalRolesMixin):
     add_permission = ENABLE_COMMENTS
     enabled = False
 
+    def is_subscibing(self, userid):
+        return userid in self.subscribers
+
+    def get_subscribers(self):
+        return self.subscribers.keys()
+
+    def add_subscribing_userid(self, userid):
+        if userid not in self.subscribers:
+            self.subscribers[userid] = unicode(uuid4())
+        return self.subscribers[userid]
+
+    def remove_subscribing_userid(self, userid):
+        self.subscribers.pop(userid, None)
+
+    def subscribe_url(self, request):
+        userid = request.authenticated_userid
+        if userid not in self.subscribers:
+            return request.resource_url(self, 'subscribe')
+
+    def unsubscribe_url(self, request, userid=None):
+        userid = userid and userid or request.authenticated_userid
+        if userid in self.subscribers:
+            return request.resource_url(self, 'unsubscribe', userid, self.subscribers[userid])
+
+    def validate(self, request):
+        """ Fetch userid if token is valid. """
+        if len(request.subpath) != 2:
+            return
+        userid = request.subpath[0]
+        token = request.subpath[1]
+        if self.subscribers.get(userid, object()) == token:
+            return userid
+
     @property
-    def notify_userids(self):
-        if not hasattr(self, '_notify_userids'):
-            self._notify_userids = OOSet()
-        return self._notify_userids
+    def subscribers(self):
+        if not hasattr(self, '_subscribers'):
+            self._subscribers = OOBTree()
+        return self._subscribers
 
     @property
     def __acl__(self):

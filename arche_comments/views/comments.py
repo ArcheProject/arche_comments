@@ -4,11 +4,16 @@ from __future__ import unicode_literals
 from arche.interfaces import IContent
 from arche.security import PERM_VIEW
 from arche.utils import generate_slug
+from arche.views.base import BaseView
 from arche.views.base import DefaultAddForm
 from pyramid.httpexceptions import HTTPForbidden
 from pyramid.httpexceptions import HTTPFound
+from pyramid.httpexceptions import HTTPNotFound
+from pyramid.httpexceptions import HTTPUnauthorized
 from pyramid.response import Response
 from pyramid.view import view_config
+from pyramid.view import view_defaults
+from pyramid_debugtoolbar.panels.introspection import nl2br
 from repoze.catalog.query import Eq
 
 from arche_comments import _
@@ -104,7 +109,7 @@ def comments_json(context, request):
                 author_title = ''
                 img_tag = ''
             item = {
-                'body': obj.body,
+                'body': nl2br(obj.body),
                 'created': request.dt_handler.format_dt(obj.created),
                 'author': author_title,
                 'img_tag': img_tag,
@@ -118,6 +123,34 @@ def toggle_comments(context, request):
     enable = request.GET.get('enable') == '1'
     context.enabled = enable
     return HTTPFound(location=request.resource_url(context.__parent__))
+
+
+@view_defaults(context=ICommentsFolder, permission=PERM_VIEW)
+class NotificationsView(BaseView):
+
+    @view_config(name='subscribe')
+    def subscribe_notifications(self):
+        userid = self.request.authenticated_userid
+        if not userid:
+            raise HTTPUnauthorized(_("You must be logged in"))
+        if not self.context.is_subscibing(self.request.authenticated_userid):
+            self.context.add_subscribing_userid(userid)
+            self.flash_messages.add(_("You will receive email notifications when someone posts something here."))
+        else:
+            self.flash_messages.add(_("You were already subscribing."))
+        return HTTPFound(location=self.request.resource_url(self.context.__parent__))
+
+    @view_config(name='unsubscribe')
+    def unsubscribe_notifications(self):
+        if not len(self.request.subpath) == 2:
+            raise HTTPNotFound()
+        userid = self.context.validate(self.request)
+        if userid:
+            self.context.remove_subscribing_userid(userid)
+            self.flash_messages.add(_("Notifications are now turned off."))
+        else:
+            self.flash_messages.add(_("No subscription found."))
+        return HTTPFound(location=self.request.resource_url(self.context.__parent__))
 
 
 def includeme(config):

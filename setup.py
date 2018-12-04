@@ -8,7 +8,7 @@ with open(os.path.join(here, 'README.rst')) as f:
 with open(os.path.join(here, 'CHANGES.rst')) as f:
     CHANGES = f.read()
 
-requires = ('Arche',)
+requires = ('Arche', 'webhelpers')
 
 tests_require = [
     'WebTest >= 1.3.1',  # py3 compat
