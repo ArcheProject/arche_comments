@@ -15,7 +15,10 @@ def convert_text(value):
     """
     # Essentially, convert newline to br, strip tags turns br into newlines and
     # removes everything else, nl2br turns it into br again :)
-    return nl2br(strip_tags(nl2br(value)))
+    try:
+        return nl2br(strip_tags(nl2br(value)))
+    except:
+        return colander.null
 
 
 class CommentSchema(colander.Schema):
