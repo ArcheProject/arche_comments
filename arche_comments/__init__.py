@@ -10,5 +10,7 @@ def includeme(config):
     config.include('.portlet')
     config.include('.schemas')
     config.include('.views')
-    #Static dir
+    # Static dir
     config.add_static_view('static_arche_comments', 'static', cache_max_age=3600)
+    # Locales
+    config.add_translation_dirs('arche_comments:locale/')
