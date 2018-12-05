@@ -51,6 +51,13 @@ function Comments(url) {
                 '.created': 'obj.created',
                 '.author': 'obj.author',
                 '.author-img': 'obj.img_tag',
+                '.comment-opts@class+': function(a) {
+                    if (a.item.edit === false) return ' hidden';
+                },
+                'a@href': function(a) {
+                    return a.item.path + 'edit';
+                },
+                '[data-comment]@data-comment': 'obj.uid',
             }
         }
     };

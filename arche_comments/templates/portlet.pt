@@ -3,7 +3,7 @@
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       i18n:domain="arche_comments">
-<div class="portlet">
+<div class="portlet" id="comments">
 
 <a tal:condition="not comments and can_toggle"
    href="${request.resource_url(context, '_add_comments')}"
@@ -48,8 +48,12 @@
   <div data-comments class="hidden">
     <div class="comment">
     <hr/>
-      <div class="comment-container">
+      <div class="comment-container" data-comment="">
         <div class="comment-head">
+          <a href="javacript:"
+             class="comment-opts pull-right">
+            <span class="glyphicon glyphicon-edit"></span>
+          </a>
           <span class="author-img"></span>
           <b class="author">Author</b>
           <span class="created text-muted small">Created</span>

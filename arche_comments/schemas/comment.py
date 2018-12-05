@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 import colander
 import deform
+from arche.schemas import maybe_modal_form
 from webhelpers.html.converters import nl2br
 from webhelpers.html.tools import strip_tags
 
@@ -32,5 +33,14 @@ class CommentSchema(colander.Schema):
     )
 
 
+class AddCommentSchema(CommentSchema):
+    pass
+
+
+class EditCommentSchema(CommentSchema):
+    widget = maybe_modal_form
+
+
 def includeme(config):
-    config.add_content_schema('Comment', CommentSchema, ('add', 'edit'))
+    config.add_content_schema('Comment', AddCommentSchema, 'add')
+    config.add_content_schema('Comment', EditCommentSchema, 'edit')

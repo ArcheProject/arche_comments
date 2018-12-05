@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from arche.api import Base
+from arche.api import LocalRolesMixin
 from zope.interface import implementer
 
 from arche_comments import _
@@ -10,7 +11,7 @@ from arche_comments.security import ADD_COMMENT
 
 
 @implementer(IComment)
-class Comment(Base):
+class Comment(Base, LocalRolesMixin):
     nav_visible = False
     listing_visible = True
     search_visible = True
