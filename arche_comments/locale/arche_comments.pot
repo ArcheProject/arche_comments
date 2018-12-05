@@ -1,0 +1,155 @@
+#
+# SOME DESCRIPTIVE TITLE
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE 1.0\n"
+"POT-Creation-Date: 2018-12-05 14:49+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Lingua 4.13\n"
+
+#: ./arche_comments/portlet.py:15 ./arche_comments/models/comments.py:30
+msgid "Comments"
+msgstr ""
+
+#: ./arche_comments/models/comment.py:19 ./arche_comments/schemas/comment.py:28
+msgid "Comment"
+msgstr ""
+
+#: ./arche_comments/models/notification.py:18
+msgid "Notification"
+msgstr ""
+
+#: ./arche_comments/models/comments.py:32
+msgid "Comments folder"
+msgstr ""
+
+#: ./arche_comments/models/comments.py:33
+msgid "Container for comments."
+msgstr ""
+
+#: ./arche_comments/schemas/comment.py:29
+msgid "Note that HTML tags will be stripped"
+msgstr ""
+
+#: ./arche_comments/schemas/portlet.py:24
+msgid "Allow comments on these types?"
+msgstr ""
+
+#: ./arche_comments/schemas/portlet.py:25
+msgid ""
+"It will still require the user to have the correct permission to enable "
+"comments."
+msgstr ""
+
+#: ./arche_comments/schemas/comments.py:12
+msgid "Send an email notification when a comment is added?"
+msgstr ""
+
+#: ./arche_comments/templates/portlet.pt:10
+msgid "Create comments section"
+msgstr ""
+
+#: ./arche_comments/templates/portlet.pt:20
+msgid "Disable comments"
+msgstr ""
+
+#: ./arche_comments/templates/portlet.pt:25
+msgid "Enable comments"
+msgstr ""
+
+#: ./arche_comments/templates/portlet.pt:32
+msgid "Disable email notifications"
+msgstr ""
+
+#: ./arche_comments/templates/portlet.pt:35
+msgid "Will send you an email when someone adds a comment here."
+msgstr ""
+
+#: ./arche_comments/templates/portlet.pt:40
+msgid "Enable email notifications"
+msgstr ""
+
+#: ./arche_comments/templates/portlet.pt:45
+msgid "No comments yet"
+msgstr ""
+
+#: ./arche_comments/templates/portlet.pt:74
+msgid "New Comment"
+msgstr ""
+
+#. Default: ${user_name} wrote a new reply in the comments section of ${title}.
+#: ./arche_comments/templates/notification_email.pt:7
+msgid "notification_leadin"
+msgstr ""
+
+#. Default: You're receiving this email since you've enabled notifications
+#. within this conversation. If you no longer want to be notified, you may
+#. disable notifications here: ${link}
+#: ./arche_comments/templates/notification_email.pt:19
+msgid "notification_footer"
+msgstr ""
+
+#: ./arche_comments/views/comments.py:34
+msgid "Create comments section?"
+msgstr ""
+
+#: ./arche_comments/views/comments.py:35
+msgid "You can disable this later on if you wish."
+msgstr ""
+
+#: ./arche_comments/views/comments.py:45
+msgid "Comments already exist here"
+msgstr ""
+
+#: ./arche_comments/views/comments.py:54
+msgid "Add"
+msgstr ""
+
+#: ./arche_comments/views/comments.py:75
+msgid "Added"
+msgstr ""
+
+#: ./arche_comments/views/comments.py:85
+msgid "Edit"
+msgstr ""
+
+#: ./arche_comments/views/comments.py:95
+msgid "You're not allowed to edit or delete this comment"
+msgstr ""
+
+#: ./arche_comments/views/comments.py:105
+msgid "Updated"
+msgstr ""
+
+#: ./arche_comments/views/comments.py:110
+msgid "Removed"
+msgstr ""
+
+#: ./arche_comments/views/comments.py:186
+msgid "You must be logged in"
+msgstr ""
+
+#: ./arche_comments/views/comments.py:189
+msgid "You will receive email notifications when someone posts something here."
+msgstr ""
+
+#: ./arche_comments/views/comments.py:191
+msgid "You were already subscribing."
+msgstr ""
+
+#: ./arche_comments/views/comments.py:201
+msgid "Notifications are now turned off."
+msgstr ""
+
+#: ./arche_comments/views/comments.py:203
+msgid "No subscription found."
+msgstr ""
