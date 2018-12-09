@@ -44,7 +44,7 @@ class AddCommentsFolderForm(DefaultAddForm):
         if name in self.context:
             raise HTTPForbidden(_("Comments already exist here"))
         if notify_user:
-            obj.notify_userids.add(self.request.authenticated_userid)
+            obj.add_subscribing_userid(self.request.authenticated_userid)
         self.context[name] = obj
         return HTTPFound(location = self.request.resource_url(self.context, anchor='comments'))
 
