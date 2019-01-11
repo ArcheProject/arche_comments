@@ -17,6 +17,7 @@ from pyramid.traversal import find_interface
 from pyramid.view import view_config
 from pyramid.view import view_defaults
 from repoze.catalog.query import Eq
+from webhelpers.html.tools import strip_tags
 
 from arche_comments import _
 from arche_comments.interfaces import IComment
@@ -101,6 +102,12 @@ class EditCommentForm(DefaultEditForm):
     def formid(self):
         return "edit-comment-%s" % self.context.uid
 
+    def appstruct(self):
+        appstruct = super(EditCommentForm, self).appstruct()
+        # It would be nice if this was handled by colander instead :/
+        appstruct['body'] = strip_tags(appstruct['body'])
+        return appstruct
+
     def save_success(self, appstruct):
         self.flash_messages.add(_("Updated"), type='success')
         self.context.update(**appstruct)
@@ -115,7 +122,6 @@ class EditCommentForm(DefaultEditForm):
 
     def cancel(self, *args):
         return redirect_parent(self.context, self.request)
-    #    return _redirect_or_remove(self)
     cancel_failure = cancel_success = cancel
 
 
