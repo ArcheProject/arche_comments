@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from arche.portlets import PortletType
+from arche.security import PERM_VIEW
 from deform_autoneed import need_lib
 from pyramid.renderers import render
 
@@ -27,14 +28,17 @@ class CommentsPortlet(PortletType):
         if comments:
             need_lib('deform')
             can_add = request.has_permission(ADD_COMMENT, comments)
+            can_view = request.has_permission(PERM_VIEW, comments)
         else:
             can_add = False
+            can_view = None
         return render(self.tpl,
                       {'portlet': self.portlet,
                        'comments': comments,
                        'view': view,
                        'can_toggle': can_toggle,
-                       'can_add': can_add},
+                       'can_add': can_add,
+                       'can_view': can_view},
                       request=request)
 
 

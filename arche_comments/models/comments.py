@@ -84,9 +84,9 @@ class CommentsFolder(Base, Folder, ContextACLMixin, LocalRolesMixin):
 
 def _find_closest_parent_attr(context, attr, default=None):
     parent = context.__parent__
-    while parent:
+    while parent is not None:
         if hasattr(parent, attr):
-            return getattr(context, attr)
+            return getattr(parent, attr)
         parent = parent.__parent__
     return default
 
