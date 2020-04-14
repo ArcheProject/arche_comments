@@ -17,6 +17,9 @@ class CommentsPortlet(PortletType):
     tpl = "arche_comments:templates/portlet.pt"
     schema_factory = CommentsPortletSchema
 
+    def visible(self, context, request, view, **kwargs):
+        return context.get('_comments', None) is not None or request.has_permission(ENABLE_COMMENTS, context)
+
     def render(self, context, request, view, **kwargs):
         comments = context.get('_comments', None)
         allowed_types = self.portlet.settings.get('allowed_types', ())
