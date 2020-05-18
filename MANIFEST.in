@@ -1,0 +1,2 @@
+include *.txt *.cfg *.rst 
+recursive-include arche_comments *.css *.js *.png *.svg *.mo *.pt
